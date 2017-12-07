@@ -24,15 +24,20 @@ export class OrderBy implements PipeTransform{
     }
 
     transform(input : Hero[], property : string, order : string) : Hero[]{
-        if (!order)
-            order = 'desc';
-        
-        if (!property)
-            property = 'id';
+        if (input !== undefined && input.length > 0){
+            if (!property){
+                property = 'id';
+            } else{
+                
+            }
 
-        return input.sort(function(a:any, b:any){
-            return (order == 'desc') ? -OrderBy._orderByComparator(a[property], b[property])
-                : OrderBy._orderByComparator(a[property], b[property]);
-        });
+            if (!order)
+                order = 'desc';
+
+            return input.sort(function(a:any, b:any){
+                return (order == 'desc') ? -OrderBy._orderByComparator(a[property], b[property])
+                    : OrderBy._orderByComparator(a[property], b[property]);
+            });
+        }
     }
 }
