@@ -1,6 +1,6 @@
 export class Hero{
-    id: number;
-    name: string;
-    powerLevel: number;
-    weakness: string;
+    id: number = 0;
+    name: string = "";
+    powerLevel: number = 0;
+    weakness: string = "";
 }

@@ -28,7 +28,12 @@ export class OrderBy implements PipeTransform{
             if (!property){
                 property = 'id';
             } else{
-                
+                let aux = new Hero();
+                let array = Object.getOwnPropertyNames(aux);
+                if (array.indexOf(property) < 0){
+                    console.error(`The property ${property} is not in Hero class`);
+                    return null;
+                }
             }
 
             if (!order)
