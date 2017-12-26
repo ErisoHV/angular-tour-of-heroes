@@ -3,5 +3,16 @@
     <a routerLink="/dashboard">Dashboard</a>
     <a routerLink="/heroes">Heroes</a>
 </nav>
+
+<ul>
+    <li *ngFor="let hero of heroes | async">{{hero.id}} - {{hero.name}} - {{hero.powerLevel}}</li>
+</ul>
+
+<div>
+    <p>ID: {{(hero | async)?.id}}</p>
+    <p>Nombre: {{(hero | async)?.name}}</p>
+
+</div>
+
 <router-outlet></router-outlet>
 <app-messages></app-messages>

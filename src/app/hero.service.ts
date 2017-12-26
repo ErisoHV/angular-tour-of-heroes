@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'; 
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Hero } from './hero';
 import { HEROES } from './mock-heroes';
@@ -19,10 +19,10 @@ export class HeroService {
 
   private heroesUrl = 'api/heroes';
 
-  constructor(private messageService: MessageService, 
+  constructor(private messageService: MessageService,
     private http : HttpClient) { }
 
-  getHeroes(): Observable<Hero[]>{
+  getHeroes(): Observable<Hero[]> {
    // return of(HEROES);
    return this.http.get<Hero[]>(this.heroesUrl)
       .pipe(
@@ -32,7 +32,7 @@ export class HeroService {
   }
 
   getHero(id: number): Observable<Hero>{
-    //return of(HEROES.find(hero => hero.id === id));
+    // return of(HEROES.find(hero => hero.id === id));
     const url = `${this.heroesUrl}/${id}`;
     return this.http.get<Hero>(url)
       .pipe(
@@ -52,7 +52,7 @@ export class HeroService {
   addHero(hero : Hero): Observable<Hero>{
     return this.http.post<Hero>(this.heroesUrl, hero, httpOptions)
       .pipe(
-          tap((hero : Hero) => (this.log(`added Hero w/ id=${hero.id}`))),
+          tap((hero: Hero) => (this.log(`added Hero w/ id=${hero.id}`))),
           catchError(this.handleError<Hero>('addError'))
       );
   }
@@ -66,7 +66,7 @@ export class HeroService {
           tap(_ => this.log(`deleted hero id=${id}`)),
           catchError(this.handleError<Hero>('deleteHero'))
       );
-  } 
+  }
 
   searchHeroes(term: string): Observable<Hero[]>{
     if (!term.trim()){
@@ -92,8 +92,7 @@ export class HeroService {
  * @param result - optional value to return as the observable result
  */
 private handleError<T> (operation = 'operation', result?: T) {
-  return (error: any): Observable<T> => {
- 
+  return (error: any): Observable<T> => { 
     // TODO: send the error to remote logging infrastructure
     console.error(error); // log to console instead
  
