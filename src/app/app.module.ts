@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule} from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService }  from './in-memory-data.service';
 
 import { AppComponent } from './app.component';
 import { HeroesComponent } from './heroes/heroes.component';
@@ -35,7 +34,7 @@ import {environment} from '../environments/environment';
     BrowserModule, 
     FormsModule, AppRoutingModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { dataEncapsulation : false }),
+    //HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { dataEncapsulation : false }),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule, // for database
 

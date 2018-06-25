@@ -4,11 +4,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Hero } from './hero';
 import { HEROES } from './mock-heroes';
 
-import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { MessageService } from './message.service';
+
+
+import {AngularFireDatabase} from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
+import { AngularFireList, AngularFireObject, DatabaseReference } from 'angularfire2/database/interfaces';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -19,26 +23,26 @@ export class HeroService {
 
   private heroesUrl = 'api/heroes';
 
-  constructor(private messageService: MessageService,
-    private http : HttpClient) { }
+    heroes: Observable<any[]>;
+    heroesReference : DatabaseReference;
+    heroesList : AngularFireList<Hero[]>;
+
+  constructor(private messageService: MessageService, private http : HttpClient, 
+    private db: AngularFireDatabase) { 
+      this.heroesReference = db.database.ref('/hero');
+      this.heroesList = db.list('/hero', ref => ref.orderByChild('powerLevel'));
+      this.heroes = this.heroesList.valueChanges();
+      console.log(this.heroes)
+    }
 
   getHeroes(): Observable<Hero[]> {
-   // return of(HEROES);
-   return this.http.get<Hero[]>(this.heroesUrl)
-      .pipe(
-        catchError(this.handleError('getHeroes', [])),
-        tap(heroes => this.log('Fetched heores'))
-      );
+    return this.heroes;
   }
 
-  getHero(id: number): Observable<Hero>{
+  getHero(name: string): Observable<Hero>{
     // return of(HEROES.find(hero => hero.id === id));
-    const url = `${this.heroesUrl}/${id}`;
-    return this.http.get<Hero>(url)
-      .pipe(
-        tap(_ => this.log(`fetched hero id=${id}`)),
-        catchError(this.handleError<Hero>(`getHero id=${id}`))
-      )
+    //return this.heroes.filter((hero : Hero[], i) => hero[i].name === name);
+    return null;
   }
 
   updateHero(hero : Hero): Observable<any>{
