@@ -17,20 +17,28 @@ export class HeroesComponent implements OnInit {
     this.heroService.getHeroes().subscribe(heroes => this.heroes = heroes);
   }
 
-  add(name : string): void{
+  add(name : string, powerLevel: string, weakness: string): void{
     name = name.trim();
     if (!name){
       return;
     }
-    this.heroService.addHero({ name } as Hero)
-      .subscribe(hero => {
-        this.heroes.push(hero);
-      });
+    if (isNaN(Number(powerLevel))){
+      return;
+    }
+    weakness = weakness.trim();
+    if (!weakness){
+      return;
+    }
+    let hero = new Hero();
+    hero.name = name;
+    hero.powerLevel = Number(powerLevel);
+    hero.weakness = weakness;
+    this.heroService.addHero(hero);
   }
 
   delete(hero : Hero): void {
     this.heroes = this.heroes.filter(h => h !== hero);
-    this.heroService.deleteHero(hero).subscribe();
+    this.heroService.deleteHero(hero);
   }
 
   ngOnInit() {

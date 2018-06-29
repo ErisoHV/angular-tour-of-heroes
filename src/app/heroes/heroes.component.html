@@ -4,15 +4,24 @@
     <label>Hero name:
       <input #heroName />
     </label>
+    <label>Power level:
+      <input #powerLevel>
+    </label>
+    <label>Weakness:
+        <input #weakness>
+      </label>
     <!-- (click) passes input value to add() and then clears the input -->
-    <button (click)="add(heroName.value); heroName.value=''">
+    <button (click)="add(heroName.value, powerLevel.value, weakness.value); 
+            heroName.value=''; powerLevel.value=''; weakness.value=''">
       add
     </button>
 </div>
 
 <ul class="heroes">
-    <li *ngFor="let hero of heroes | orderBy: 'powerLevel' : 'asc'">
-        <a routerLink="/detail/{{hero.id}}"><span class="badge">{{hero.id}}</span> {{hero.name}}</a>
-        <button class="delete" title="delete hero" (click)="delete(hero)">x</button>
+    <li *ngFor="let hero of heroes"> <!--| orderBy: 'powerLevel' : 'asc'-->
+        <a routerLink="/detail/{{hero.key}}"><span class="badge">{{hero.payload.val().powerLevel}}</span> 
+            {{hero.payload.val().name}}
+        </a>
+        <button class="delete" title="delete hero" (click)="delete(hero)">x</button> 
     </li>
 </ul>

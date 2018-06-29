@@ -31,8 +31,7 @@ export class HeroService {
     private db: AngularFireDatabase) { 
       this.heroesReference = db.database.ref('/hero');
       this.heroesList = db.list('/hero', ref => ref.orderByChild('powerLevel'));
-      this.heroes = this.heroesList.valueChanges();
-      console.log(this.heroes)
+      this.heroes = this.heroesList.snapshotChanges();
     }
 
   getHeroes(): Observable<Hero[]> {
@@ -42,34 +41,28 @@ export class HeroService {
   getHero(name: string): Observable<Hero>{
     // return of(HEROES.find(hero => hero.id === id));
     //return this.heroes.filter((hero : Hero[], i) => hero[i].name === name);
+   // console.log(this.heroesList)
+    //this.heroes.map
     return null;
   }
 
   updateHero(hero : Hero): Observable<any>{
     return this.http.put(this.heroesUrl, hero, httpOptions)
       .pipe(
-        tap(_ => this.log(`updated hero id=${hero.id}`)),
+        tap(_ => this.log(`updated hero id=${hero.key}`)),
         catchError(this.handleError<any>('updateHero'))
       );
   }
 
-  addHero(hero : Hero): Observable<Hero>{
-    return this.http.post<Hero>(this.heroesUrl, hero, httpOptions)
-      .pipe(
-          tap((hero: Hero) => (this.log(`added Hero w/ id=${hero.id}`))),
-          catchError(this.handleError<Hero>('addError'))
-      );
+  addHero(hero : Hero){
+      this.heroesReference.push(hero);
   }
 
-  deleteHero(hero : Hero | number):Observable<Hero>{
-    const id = typeof hero === 'number' ? hero : hero.id;
-    const url = `${this.heroesUrl}/${id}`;
-
-    return this.http.delete<Hero>(url,httpOptions)
-      .pipe(
-          tap(_ => this.log(`deleted hero id=${id}`)),
-          catchError(this.handleError<Hero>('deleteHero'))
-      );
+  deleteHero(hero : Hero | string):void{
+    const id = typeof hero === 'string' ? hero : hero.key;
+    console.log(hero)
+    console.log(`Eliminando: ${id}`)
+    this.heroesReference.child(`${id}`).remove();
   }
 
   searchHeroes(term: string): Observable<Hero[]>{

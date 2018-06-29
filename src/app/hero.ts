@@ -1,5 +1,5 @@
 export class Hero {
-    id: number = 0;
+    key: string;
     name: string = '';
     powerLevel: number = 0;
     weakness: string = '';
